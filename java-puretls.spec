@@ -53,7 +53,7 @@ ant \
     -Dgnugetopt.jar=%{_javalibdir}/gnu.getopt.jar \
     -Djdk.version=%{jdkversion} \
     clean compile
-    
+
 ant -Dcryptix.jar=%{_javalibdir}/cryptix.jar \
     -Dcryptix-asn1.jar=%{_javalibdir}/cryptix-asn1.jar \
     -Dgnugetopt.jar=%{_javalibdir}/gnu.getopt.jar \
