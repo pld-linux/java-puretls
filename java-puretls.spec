@@ -36,27 +36,27 @@ uznali, ¿e podstawowe bezpieczeñstwo sieci jest dobrem publicznym.
 %prep
 %setup -q -n %{name}-%{version}%{beta}
 find . -type f |
-    xargs grep -l "/usr/local/bin/perl5" | \
-    xargs perl -pi -e "s|/usr/local/bin/perl5|/usr/bin/perl|g;"
+	xargs grep -l "/usr/local/bin/perl5" | \
+	xargs perl -pi -e "s|/usr/local/bin/perl5|/usr/bin/perl|g;"
 find . -type f |
-    xargs grep -l "/usr/local/bin/perl" | \
-    xargs perl -pi -e "s|/usr/local/bin/perl|/usr/bin/perl|g;"
+	xargs grep -l "/usr/local/bin/perl" | \
+	xargs perl -pi -e "s|/usr/local/bin/perl|/usr/bin/perl|g;"
 
 find . -name "*.jar" -exec rm -f {} \;
 find . -name "*.class" -exec rm -f {} \;
 
 %build
 ant \
-    -Dcryptix.jar=%{_javadir}/cryptix.jar \
-    -Dcryptix-asn1.jar=%{_javadir}/cryptix-asn1.jar \
-    -Dgnugetopt.jar=%{_javadir}/gnu.getopt.jar \
-    -Djdk.version=%{jdkversion} \
-    clean compile
+	-Dcryptix.jar=%{_javadir}/cryptix.jar \
+	-Dcryptix-asn1.jar=%{_javadir}/cryptix-asn1.jar \
+	-Dgnugetopt.jar=%{_javadir}/gnu.getopt.jar \
+	-Djdk.version=%{jdkversion} \
+	clean compile
 
 ant -Dcryptix.jar=%{_javadir}/cryptix.jar \
-    -Dcryptix-asn1.jar=%{_javadir}/cryptix-asn1.jar \
-    -Dgnugetopt.jar=%{_javadir}/gnu.getopt.jar \
-    javadoc
+	-Dcryptix-asn1.jar=%{_javadir}/cryptix-asn1.jar \
+	-Dgnugetopt.jar=%{_javadir}/gnu.getopt.jar \
+	javadoc
 
 %install
 rm -rf $RPM_BUILD_ROOT
