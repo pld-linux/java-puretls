@@ -1,8 +1,8 @@
-%define		beta		b4
 Summary:	Java implementation of SSLv3 and TLSv1
 Summary(pl):	Implementacja SSLv3 i TLSv1 w Javie
 Name:		puretls
 Version:	0.9
+%define		beta	b4
 Release:	0.%{beta}.1
 License:	BSD-like
 Group:		Development/Languages/Java
@@ -18,7 +18,6 @@ Requires:	cryptix-asn1 = 0.20011119
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_javalibdir	%{_datadir}/java
 %define		jdkversion	1.4
 
 %description
@@ -48,24 +47,24 @@ find . -name "*.class" -exec rm -f {} \;
 
 %build
 ant \
-    -Dcryptix.jar=%{_javalibdir}/cryptix.jar \
-    -Dcryptix-asn1.jar=%{_javalibdir}/cryptix-asn1.jar \
-    -Dgnugetopt.jar=%{_javalibdir}/gnu.getopt.jar \
+    -Dcryptix.jar=%{_javadir}/cryptix.jar \
+    -Dcryptix-asn1.jar=%{_javadir}/cryptix-asn1.jar \
+    -Dgnugetopt.jar=%{_javadir}/gnu.getopt.jar \
     -Djdk.version=%{jdkversion} \
     clean compile
 
-ant -Dcryptix.jar=%{_javalibdir}/cryptix.jar \
-    -Dcryptix-asn1.jar=%{_javalibdir}/cryptix-asn1.jar \
-    -Dgnugetopt.jar=%{_javalibdir}/gnu.getopt.jar \
+ant -Dcryptix.jar=%{_javadir}/cryptix.jar \
+    -Dcryptix-asn1.jar=%{_javadir}/cryptix-asn1.jar \
+    -Dgnugetopt.jar=%{_javadir}/gnu.getopt.jar \
     javadoc
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_javalibdir}
+install -d $RPM_BUILD_ROOT%{_javadir}
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}
 
-cp build/%{name}.jar $RPM_BUILD_ROOT%{_javalibdir}
-ln -sf %{name}.jar $RPM_BUILD_ROOT%{_javalibdir}/%{name}-%{version}.jar
+cp build/%{name}.jar $RPM_BUILD_ROOT%{_javadir}
+ln -sf %{name}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
 
 cp build/%{name}demo.jar $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}-demo.jar
 cp *.pem $RPM_BUILD_ROOT%{_datadir}/%{name}
@@ -77,5 +76,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog COPYRIGHT INSTALL LICENSE README build/doc/*
-%{_javalibdir}/*.jar
+%{_javadir}/*.jar
 %{_datadir}/%{name}
