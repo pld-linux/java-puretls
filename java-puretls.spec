@@ -1,20 +1,20 @@
 %define		beta		b4
-
+Summary:	Java implementation of SSLv3 and TLSv1
+Summary(pl):	Implementacja SSLv3 i TLSv1 w Javie
 Name:		puretls
 Version:	0.9
 Release:	0.%{beta}.1
-Summary:	Java implementation of SSLv3 and TLSv1
-License:	BSD style
+License:	BSD-like
 Group:		Development/Languages/Java
 Source0:	http://www.mirrors.wiretapped.net/security/cryptography/libraries/tls/%{name}/%{name}-%{version}%{beta}.tar.gz
 # Source0-md5:	b2e4e947af30387b86dbf3473fdbd103
-URL:		http://www.rtfm.com/puretls
-Requires:	cryptix
-Requires:	cryptix-asn1 = 0.20011119
+URL:		http://www.rtfm.com/puretls/
 BuildRequires:	jakarta-ant
 BuildRequires:	cryptix
 BuildRequires:	cryptix-asn1 = 0.20011119
 BuildRequires:	gnu.getopt
+Requires:	cryptix
+Requires:	cryptix-asn1 = 0.20011119
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -23,13 +23,19 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 PureTLS is a free Java-only implementation of the SSLv3 and TLSv1
-(RFC2246) protocols. PureTLS was developed by Eric Rescorla for Claymore
-Systems, Inc, but is being distributed for free because we believe that
-basic network security is a public good and should be a commodity.
+(RFC2246) protocols. PureTLS was developed by Eric Rescorla for
+Claymore Systems, Inc, but is being distributed for free because we
+believe that basic network security is a public good and should be a
+commodity.
+
+%description -l pl
+PureTLS to implementacja w samej Javie protoko³ów SSLv3 i TLSv1 (RFC
+2246). PureTLS zosta³ stworzony przez Erica Rescorlê dla Claymore
+Systems Inc., ale jest dystrybuowany za darmo, poniewa¿ w³a¶ciciele
+uznali, ¿e podstawowe bezpieczeñstwo sieci jest dobrem publicznym.
 
 %prep
 %setup -q -n %{name}-%{version}%{beta}
-#%patch
 find . -type f |
     xargs grep -l "/usr/local/bin/perl5" | \
     xargs perl -pi -e "s|/usr/local/bin/perl5|/usr/bin/perl|g;"
