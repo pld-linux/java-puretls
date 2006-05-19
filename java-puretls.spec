@@ -9,7 +9,7 @@ Group:		Development/Languages/Java
 Source0:	http://www.mirrors.wiretapped.net/security/cryptography/libraries/tls/%{name}/%{name}-%{version}%{beta}.tar.gz
 # Source0-md5:	b2e4e947af30387b86dbf3473fdbd103
 URL:		http://www.rtfm.com/puretls/
-BuildRequires:	jakarta-ant
+BuildRequires:	ant
 BuildRequires:	cryptix
 BuildRequires:	cryptix-asn1 = 0.20011119
 BuildRequires:	gnu.getopt
