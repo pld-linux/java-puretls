@@ -1,5 +1,5 @@
 Summary:	Java implementation of SSLv3 and TLSv1
-Summary(pl):	Implementacja SSLv3 i TLSv1 w Javie
+Summary(pl.UTF-8):   Implementacja SSLv3 i TLSv1 w Javie
 Name:		puretls
 Version:	0.9
 %define		beta	b4
@@ -27,11 +27,11 @@ Claymore Systems, Inc, but is being distributed for free because we
 believe that basic network security is a public good and should be a
 commodity.
 
-%description -l pl
-PureTLS to implementacja w samej Javie protoko≥Ûw SSLv3 i TLSv1 (RFC
-2246). PureTLS zosta≥ stworzony przez Erica RescorlÍ dla Claymore
-Systems Inc., ale jest dystrybuowany za darmo, poniewaø w≥a∂ciciele
-uznali, øe podstawowe bezpieczeÒstwo sieci jest dobrem publicznym.
+%description -l pl.UTF-8
+PureTLS to implementacja w samej Javie protoko≈Ç√≥w SSLv3 i TLSv1 (RFC
+2246). PureTLS zosta≈Ç stworzony przez Erica Rescorlƒô dla Claymore
+Systems Inc., ale jest dystrybuowany za darmo, poniewa≈º w≈Ça≈õciciele
+uznali, ≈ºe podstawowe bezpiecze≈Ñstwo sieci jest dobrem publicznym.
 
 %prep
 %setup -q -n %{name}-%{version}%{beta}
