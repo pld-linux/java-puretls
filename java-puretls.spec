@@ -1,5 +1,5 @@
 Summary:	Java implementation of SSLv3 and TLSv1
-Summary(pl.UTF-8):   Implementacja SSLv3 i TLSv1 w Javie
+Summary(pl.UTF-8):	Implementacja SSLv3 i TLSv1 w Javie
 Name:		puretls
 Version:	0.9
 %define		beta	b4
