@@ -12,6 +12,8 @@ URL:		http://www.rtfm.com/puretls/
 BuildRequires:	ant
 BuildRequires:	cryptix
 BuildRequires:	cryptix-asn1 = 0.20011119
+BuildRequires:	jpackage-utils
+BuildRequires:	rpmbuild(macros) >= 1.300
 BuildRequires:	gnu.getopt
 Requires:	cryptix
 Requires:	cryptix-asn1 = 0.20011119
@@ -33,6 +35,18 @@ PureTLS to implementacja w samej Javie protokołów SSLv3 i TLSv1 (RFC
 Systems Inc., ale jest dystrybuowany za darmo, ponieważ właściciele
 uznali, że podstawowe bezpieczeństwo sieci jest dobrem publicznym.
 
+%package javadoc
+Summary:	Online manual for %{name}
+Summary(pl.UTF-8):	Dokumentacja online do %{name}
+Group:		Documentation
+Requires:	jpackage-utils
+
+%description javadoc
+Documentation for %{name}.
+
+%description javadoc -l pl.UTF-8
+Dokumentacja do %{name}a.
+
 %prep
 %setup -q -n %{name}-%{version}%{beta}
 find . -type f |
@@ -42,26 +56,20 @@ find . -type f |
 	xargs grep -l "/usr/local/bin/perl" | \
 	xargs perl -pi -e "s|/usr/local/bin/perl|/usr/bin/perl|g;"
 
-find . -name "*.jar" -exec rm -f {} \;
-find . -name "*.class" -exec rm -f {} \;
-
 %build
-ant \
-	-Dcryptix.jar=%{_javadir}/cryptix.jar \
-	-Dcryptix-asn1.jar=%{_javadir}/cryptix-asn1.jar \
-	-Dgnugetopt.jar=%{_javadir}/gnu.getopt.jar \
+required_jars="cryptix cryptix-asn1 gnu.getopt"
+export CLASSPATH=$(/usr/bin/build-classpath $required_jars)
+
+%ant \
 	-Djdk.version=%{jdkversion} \
 	clean compile
 
-ant -Dcryptix.jar=%{_javadir}/cryptix.jar \
-	-Dcryptix-asn1.jar=%{_javadir}/cryptix-asn1.jar \
-	-Dgnugetopt.jar=%{_javadir}/gnu.getopt.jar \
+%ant \
 	javadoc
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_javadir}
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}
+install -d $RPM_BUILD_ROOT{%{_javadir},%{_datadir}/%{name}}
 
 cp build/%{name}.jar $RPM_BUILD_ROOT%{_javadir}
 ln -sf %{name}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
@@ -70,11 +78,19 @@ cp build/%{name}demo.jar $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}-demo.jar
 cp *.pem $RPM_BUILD_ROOT%{_datadir}/%{name}
 cp test.pl $RPM_BUILD_ROOT%{_datadir}/%{name}
 
+# javadoc
+install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+cp -pr build/doc/api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog COPYRIGHT INSTALL LICENSE README build/doc/*
+%doc ChangeLog COPYRIGHT INSTALL LICENSE README
 %{_javadir}/*.jar
 %{_datadir}/%{name}
+
+%files javadoc
+%defattr(644,root,root,755)
+%{_javadocdir}/%{name}-%{version}
