@@ -15,6 +15,9 @@ BuildRequires:	cryptix-asn1 = 0.20011119
 BuildRequires:	jpackage-utils
 BuildRequires:	rpmbuild(macros) >= 1.300
 BuildRequires:	gnu.getopt
+%if %(locale -a | grep -q '^en_US$'; echo $?)
+BuildRequires:	glibc-localedb-all
+%endif
 Requires:	cryptix
 Requires:	cryptix-asn1 = 0.20011119
 BuildArch:	noarch
@@ -59,6 +62,7 @@ find . -type f |
 %build
 required_jars="cryptix cryptix-asn1 gnu.getopt"
 export CLASSPATH=$(/usr/bin/build-classpath $required_jars)
+export LC_ALL=en_US # source code not US-ASCII
 
 %ant \
 	-Djdk.version=%{jdkversion} \
