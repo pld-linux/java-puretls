@@ -12,9 +12,9 @@ URL:		http://www.rtfm.com/puretls/
 BuildRequires:	ant
 BuildRequires:	cryptix
 BuildRequires:	cryptix-asn1 = 0.20011119
+BuildRequires:	java-gnu-getopt
 BuildRequires:	jpackage-utils
 BuildRequires:	rpmbuild(macros) >= 1.300
-BuildRequires:	gnu.getopt
 %if %(locale -a | grep -q '^en_US$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
@@ -60,7 +60,7 @@ find . -type f |
 	xargs perl -pi -e "s|/usr/local/bin/perl|/usr/bin/perl|g;"
 
 %build
-required_jars="cryptix cryptix-asn1 gnu.getopt"
+required_jars="cryptix cryptix-asn1 gnu-getopt"
 export CLASSPATH=$(/usr/bin/build-classpath $required_jars)
 export LC_ALL=en_US # source code not US-ASCII
 
