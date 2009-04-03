@@ -1,12 +1,12 @@
+%define		beta	b4
 Summary:	Java implementation of SSLv3 and TLSv1
 Summary(pl.UTF-8):	Implementacja SSLv3 i TLSv1 w Javie
 Name:		puretls
 Version:	0.9
-%define		beta	b4
 Release:	0.%{beta}.1
 License:	BSD-like
 Group:		Development/Languages/Java
-Source0:	http://www.mirrors.wiretapped.net/security/cryptography/libraries/tls/%{name}/%{name}-%{version}%{beta}.tar.gz
+Source0:	http://www.mirrors.wiretapped.net/security/cryptography/libraries/tls/puretls/%{name}-%{version}%{beta}.tar.gz
 # Source0-md5:	b2e4e947af30387b86dbf3473fdbd103
 URL:		http://www.rtfm.com/puretls/
 BuildRequires:	ant
@@ -15,6 +15,7 @@ BuildRequires:	cryptix-asn1 = 0.20011119
 BuildRequires:	java-gnu-getopt
 BuildRequires:	jpackage-utils
 BuildRequires:	rpmbuild(macros) >= 1.300
+BuildRequires:	sed >= 4.0
 %if %(locale -a | grep -q '^en_US$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
@@ -52,16 +53,17 @@ Dokumentacja do %{name}a.
 
 %prep
 %setup -q -n %{name}-%{version}%{beta}
-find . -type f |
+find -type f | \
 	xargs grep -l "/usr/local/bin/perl5" | \
-	xargs perl -pi -e "s|/usr/local/bin/perl5|/usr/bin/perl|g;"
-find . -type f |
+	xargs sed -i -e "s|/usr/local/bin/perl5|/usr/bin/perl|g;"
+find -type f | \
 	xargs grep -l "/usr/local/bin/perl" | \
-	xargs perl -pi -e "s|/usr/local/bin/perl|/usr/bin/perl|g;"
+	xargs sed -i -e "s|/usr/local/bin/perl|/usr/bin/perl|g;"
 
 %build
 required_jars="cryptix cryptix-asn1 gnu-getopt"
-export CLASSPATH=$(/usr/bin/build-classpath $required_jars)
+CLASSPATH=$(build-classpath $required_jars)
+export CLASSPATH
 export LC_ALL=en_US # source code not US-ASCII
 
 %ant \
