@@ -7,19 +7,19 @@
 %include	/usr/lib/rpm/macros.java
 
 %define		srcname		puretls
-%define		beta	b4
+%define		beta	b5
 Summary:	Java implementation of SSLv3 and TLSv1
 Summary(pl.UTF-8):	Implementacja SSLv3 i TLSv1 w Javie
-Name:		puretls
+Name:		java-puretls
 Version:	0.9
 Release:	0.%{beta}.1
 License:	BSD-like
 Group:		Libraries/Java
-Source0:	http://www.mirrors.wiretapped.net/security/cryptography/libraries/tls/puretls/%{srcname}-%{version}%{beta}.tar.gz
-# Source0-md5:	b2e4e947af30387b86dbf3473fdbd103
+Source0:	%{srcname}-%{version}%{beta}.tar.gz
+# Source0-md5:	f14690ef749f21dc3b98a7293191fff3
 URL:		http://www.rtfm.com/puretls/
 BuildRequires:	ant
-BuildRequires:	java-cryptix
+BuildRequires:	java-cryptix >= 3.2.0
 BuildRequires:	java-cryptix-asn1 = 0.20011119
 BuildRequires:	java-sun
 BuildRequires:	jpackage-utils
@@ -28,7 +28,7 @@ BuildRequires:	sed >= 4.0
 %if %(locale -a | grep -q '^en_US$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
-Requires:	cryptix
+Requires:	cryptix >= 3.2.0
 Requires:	cryptix-asn1 = 0.20011119
 Requires:	java-sun-jre
 BuildArch:	noarch
