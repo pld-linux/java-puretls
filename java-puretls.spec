@@ -1,6 +1,7 @@
 # TODO:
 # - It uses sun's proprietari API provided by rt.jar from J2SE, so I have no idea
 #   how to build it using gcj.
+#   note this warning: [javac] /home/users/pawelz/rpm/BUILD.noarch-linux/puretls-0.9b5/src/COM/claymoresystems/provider/test/DSATest.java:51: warning: sun.security.provider.DSAPublicKey is Sun proprietary API and may be removed in a future release
 
 %bcond_without	javadoc		# don't build javadoc
 
@@ -90,8 +91,8 @@ cp build/%{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}.jar
 ln -sf %{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
 
 cp build/%{srcname}demo.jar $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}/%{srcname}-demo.jar
-cp *.pem $RPM_BUILD_ROOT%{_datadir}/%{srcname}
-cp test.pl $RPM_BUILD_ROOT%{_datadir}/%{srcname}
+cp *.pem $RPM_BUILD_ROOT%{_datadir}/%{name}
+cp test.pl $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 %if %{with javadoc}
 # javadoc
