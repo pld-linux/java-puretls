@@ -1,9 +1,11 @@
-# TODO:
-# - It uses sun's proprietari API provided by rt.jar from J2SE, so I have no idea
-#   how to build it using gcj.
-#   note this warning: [javac] /home/users/pawelz/rpm/BUILD.noarch-linux/puretls-0.9b5/src/COM/claymoresystems/provider/test/DSATest.java:51: warning: sun.security.provider.DSAPublicKey is Sun proprietary API and may be removed in a future release
 
 %bcond_without	javadoc		# don't build javadoc
+
+%if "%{pld_release}" == "ti"
+%bcond_without	java_sun	# build with gcj
+%else
+%bcond_with	java_sun	# build with java-sun
+%endif
 
 %include	/usr/lib/rpm/macros.java
 
@@ -13,7 +15,7 @@ Summary:	Java implementation of SSLv3 and TLSv1
 Summary(pl.UTF-8):	Implementacja SSLv3 i TLSv1 w Javie
 Name:		java-puretls
 Version:	0.9
-Release:	0.%{beta}.1
+Release:	0.%{beta}.2
 License:	BSD-like
 Group:		Libraries/Java
 Source0:	%{srcname}-%{version}%{beta}.tar.gz
@@ -22,8 +24,10 @@ URL:		http://www.rtfm.com/puretls/
 BuildRequires:	ant
 BuildRequires:	java-cryptix >= 3.2.0
 BuildRequires:	java-cryptix-asn1 = 0.20011119
-BuildRequires:	java-sun
+%{!?with_java_sun:BuildRequires:	java-gcj-compat-devel}
+%{?with_java_sun:BuildRequires:	java-sun}
 BuildRequires:	jpackage-utils
+BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.300
 BuildRequires:	sed >= 4.0
 %if %(locale -a | grep -q '^en_US$'; echo $?)
@@ -31,7 +35,6 @@ BuildRequires:	glibc-localedb-all
 %endif
 Requires:	cryptix >= 3.2.0
 Requires:	cryptix-asn1 = 0.20011119
-Requires:	java-sun-jre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -70,6 +73,11 @@ find -type f | \
 find -type f | \
 	xargs grep -l "/usr/local/bin/perl" | \
 	xargs sed -i -e "s|/usr/local/bin/perl|/usr/bin/perl|g;"
+
+# Disable test that uses proprietary SUN API
+%if %{without java_sun}
+mv src/COM/claymoresystems/provider/test/DSATest.java{,.disabled}
+%endif
 
 %build
 required_jars="cryptix cryptix-asn1"
