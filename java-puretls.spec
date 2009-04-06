@@ -1,11 +1,9 @@
+# TODO:
+# - It uses sun's proprietari API provided by rt.jar from J2SE, so I have no idea
+#   how to build it using gcj.
+
 %bcond_without	javadoc		# don't build javadoc
 
-%if "%{pld_release}" == "ti"
-%bcond_without	java_sun	# build with gcj
-%else
-%bcond_with	java_sun	# build with java-sun
-%endif
-#
 %include	/usr/lib/rpm/macros.java
 
 %define		srcname		puretls
@@ -23,7 +21,7 @@ URL:		http://www.rtfm.com/puretls/
 BuildRequires:	ant
 BuildRequires:	java-cryptix
 BuildRequires:	java-cryptix-asn1 = 0.20011119
-#BuildRequires:	java-gnu-getopt
+BuildRequires:	java-sun
 BuildRequires:	jpackage-utils
 BuildRequires:	rpmbuild(macros) >= 1.300
 BuildRequires:	sed >= 4.0
@@ -32,6 +30,7 @@ BuildRequires:	glibc-localedb-all
 %endif
 Requires:	cryptix
 Requires:	cryptix-asn1 = 0.20011119
+Requires:	java-sun-jre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -90,7 +89,7 @@ install -d $RPM_BUILD_ROOT{%{_examplesdir}/%{name}-%{version},%{_javadir},%{_dat
 cp build/%{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}.jar
 ln -sf %{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
 
-cp build/%{srcname}demo.jar $RPM_BUILD_ROOT%{_examplesdir}/%{name}/%{srcname}-demo.jar
+cp build/%{srcname}demo.jar $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}/%{srcname}-demo.jar
 cp *.pem $RPM_BUILD_ROOT%{_datadir}/%{srcname}
 cp test.pl $RPM_BUILD_ROOT%{_datadir}/%{srcname}
 
