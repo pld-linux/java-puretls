@@ -1,3 +1,14 @@
+%bcond_without	javadoc		# don't build javadoc
+
+%if "%{pld_release}" == "ti"
+%bcond_without	java_sun	# build with gcj
+%else
+%bcond_with	java_sun	# build with java-sun
+%endif
+#
+%include	/usr/lib/rpm/macros.java
+
+%define		srcname		puretls
 %define		beta	b4
 Summary:	Java implementation of SSLv3 and TLSv1
 Summary(pl.UTF-8):	Implementacja SSLv3 i TLSv1 w Javie
@@ -5,13 +16,13 @@ Name:		puretls
 Version:	0.9
 Release:	0.%{beta}.1
 License:	BSD-like
-Group:		Development/Languages/Java
-Source0:	http://www.mirrors.wiretapped.net/security/cryptography/libraries/tls/puretls/%{name}-%{version}%{beta}.tar.gz
+Group:		Libraries/Java
+Source0:	http://www.mirrors.wiretapped.net/security/cryptography/libraries/tls/puretls/%{srcname}-%{version}%{beta}.tar.gz
 # Source0-md5:	b2e4e947af30387b86dbf3473fdbd103
 URL:		http://www.rtfm.com/puretls/
 BuildRequires:	ant
-BuildRequires:	cryptix
-BuildRequires:	cryptix-asn1 = 0.20011119
+BuildRequires:	java-cryptix
+BuildRequires:	java-cryptix-asn1 = 0.20011119
 BuildRequires:	java-gnu-getopt
 BuildRequires:	jpackage-utils
 BuildRequires:	rpmbuild(macros) >= 1.300
@@ -40,19 +51,19 @@ Systems Inc., ale jest dystrybuowany za darmo, ponieważ właściciele
 uznali, że podstawowe bezpieczeństwo sieci jest dobrem publicznym.
 
 %package javadoc
-Summary:	Online manual for %{name}
-Summary(pl.UTF-8):	Dokumentacja online do %{name}
+Summary:	Online manual for %{srcname}
+Summary(pl.UTF-8):	Dokumentacja online do %{srcname}
 Group:		Documentation
 Requires:	jpackage-utils
 
 %description javadoc
-Documentation for %{name}.
+Documentation for %{srcname}.
 
 %description javadoc -l pl.UTF-8
-Dokumentacja do %{name}a.
+Dokumentacja do %{srcname}.
 
 %prep
-%setup -q -n %{name}-%{version}%{beta}
+%setup -q -n %{srcname}-%{version}%{beta}
 find -type f | \
 	xargs grep -l "/usr/local/bin/perl5" | \
 	xargs sed -i -e "s|/usr/local/bin/perl5|/usr/bin/perl|g;"
@@ -70,33 +81,42 @@ export LC_ALL=en_US # source code not US-ASCII
 	-Djdk.version=%{jdkversion} \
 	clean compile
 
-%ant \
-	javadoc
+%{?with_javadoc:%ant javadoc}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_javadir},%{_datadir}/%{name}}
+install -d $RPM_BUILD_ROOT{%{_examplesdir}/%{name}-%{version},%{_javadir},%{_datadir}/%{name}}
 
-cp build/%{name}.jar $RPM_BUILD_ROOT%{_javadir}
-ln -sf %{name}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
+cp build/%{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}.jar
+ln -sf %{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
 
-cp build/%{name}demo.jar $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}-demo.jar
-cp *.pem $RPM_BUILD_ROOT%{_datadir}/%{name}
-cp test.pl $RPM_BUILD_ROOT%{_datadir}/%{name}
+cp build/%{srcname}demo.jar $RPM_BUILD_ROOT%{_examplesdir}/%{name}/%{srcname}-demo.jar
+cp *.pem $RPM_BUILD_ROOT%{_datadir}/%{srcname}
+cp test.pl $RPM_BUILD_ROOT%{_datadir}/%{srcname}
 
+%if %{with javadoc}
 # javadoc
-install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-cp -pr build/doc/api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+install -d $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
+cp -pr build/doc/api/* $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
+ln -s %{srcname}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{srcname} # ghost symlink
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post javadoc
+ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
 
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog COPYRIGHT INSTALL LICENSE README
 %{_javadir}/*.jar
 %{_datadir}/%{name}
+%{_examplesdir}/%{name}-%{version}
 
+%if %{with javadoc}
 %files javadoc
 %defattr(644,root,root,755)
-%{_javadocdir}/%{name}-%{version}
+%{_javadocdir}/%{srcname}-%{version}
+%ghost %{_javadocdir}/%{srcname}
+%endif
