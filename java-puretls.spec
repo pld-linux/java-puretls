@@ -15,7 +15,7 @@ Summary:	Java implementation of SSLv3 and TLSv1
 Summary(pl.UTF-8):	Implementacja SSLv3 i TLSv1 w Javie
 Name:		java-puretls
 Version:	0.9
-Release:	0.%{beta}.2
+Release:	0.%{beta}.3
 License:	BSD-like
 Group:		Libraries/Java
 Source0:	%{srcname}-%{version}%{beta}.tar.gz
@@ -33,8 +33,8 @@ BuildRequires:	sed >= 4.0
 %if %(locale -a | grep -q '^en_US$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
-Requires:	cryptix >= 3.2.0
-Requires:	cryptix-asn1 = 0.20011119
+Requires:	java-cryptix >= 3.2.0
+Requires:	java-cryptix-asn1 = 0.20011119
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
