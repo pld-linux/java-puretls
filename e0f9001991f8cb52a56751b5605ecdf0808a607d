@@ -1,0 +1,5 @@
+- renamed from puretls.spec
+- G: Libraries/Java
+- bcond for javadoc
+- bconds for jdk
+- install examples in %{_exampledir}
