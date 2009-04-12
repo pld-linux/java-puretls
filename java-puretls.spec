@@ -11,11 +11,12 @@
 
 %define		srcname		puretls
 %define		beta	b5
+%define		rel		4
 Summary:	Java implementation of SSLv3 and TLSv1
 Summary(pl.UTF-8):	Implementacja SSLv3 i TLSv1 w Javie
 Name:		java-puretls
 Version:	0.9
-Release:	0.%{beta}.3
+Release:	0.%{beta}.%{rel}
 License:	BSD-like
 Group:		Libraries/Java
 Source0:	%{srcname}-%{version}%{beta}.tar.gz
@@ -35,6 +36,8 @@ BuildRequires:	glibc-localedb-all
 %endif
 Requires:	java-cryptix >= 3.2.0
 Requires:	java-cryptix-asn1 = 0.20011119
+Provides:	puretls
+Obsoletes:	puretls
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -58,6 +61,8 @@ Summary:	Online manual for %{srcname}
 Summary(pl.UTF-8):	Dokumentacja online do %{srcname}
 Group:		Documentation
 Requires:	jpackage-utils
+Provides:	puretls-javadoc
+Obsoletes:	puretls-javadoc
 
 %description javadoc
 Documentation for %{srcname}.
