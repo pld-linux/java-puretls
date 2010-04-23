@@ -1,12 +1,6 @@
 
 %bcond_without	javadoc		# don't build javadoc
 
-%if "%{pld_release}" == "ti"
-%bcond_without	java_sun	# build with gcj
-%else
-%bcond_with	java_sun	# build with java-sun
-%endif
-
 %include	/usr/lib/rpm/macros.java
 
 %define		srcname		puretls
@@ -25,10 +19,8 @@ URL:		http://www.rtfm.com/puretls/
 BuildRequires:	ant
 BuildRequires:	java-cryptix >= 3.2.0
 BuildRequires:	java-cryptix-asn1 = 0.20011119
-%{!?with_java_sun:BuildRequires:	java-gcj-compat-devel}
-%{?with_java_sun:BuildRequires:	java-sun}
+BuildRequires:	jdk
 BuildRequires:	jpackage-utils
-BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.300
 BuildRequires:	sed >= 4.0
 %if %(locale -a | grep -q '^en_US$'; echo $?)
