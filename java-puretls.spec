@@ -21,6 +21,7 @@ BuildRequires:	java-cryptix >= 3.2.0
 BuildRequires:	java-cryptix-asn1 = 0.20011119
 BuildRequires:	jdk
 BuildRequires:	jpackage-utils
+BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.300
 BuildRequires:	sed >= 4.0
 %if %(locale -a | grep -q '^en_US$'; echo $?)
