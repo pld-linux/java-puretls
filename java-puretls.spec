@@ -5,7 +5,6 @@
 %define		srcname		puretls
 %define		beta	b5
 %define		rel		5
-%include	/usr/lib/rpm/macros.java
 Summary:	Java implementation of SSLv3 and TLSv1
 Summary(pl.UTF-8):	Implementacja SSLv3 i TLSv1 w Javie
 Name:		java-puretls
